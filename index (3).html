@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+   <title>Student Complaint Portal</title>
+   <style>
+      * {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0
+      }
+
+      body {
+         font-family: Arial, sans-serif;
+         background: #f1f5f9;
+         color: #1e293b
+      }
+
+      header {
+         background: #12355b;
+         color: #fff;
+         text-align: center;
+         padding: 25px 15px
+      }
+
+      header h1 {
+         margin-bottom: 8px
+      }
+
+      nav {
+         margin-top: 20px
+      }
+
+      nav button {
+         background: transparent;
+         border: 0;
+         color: #fff;
+         margin: 5px 10px;
+         font-size: 15px;
+         cursor: pointer
+      }
+
+      nav button:hover {
+         text-decoration: underline
+      }
+
+      .container {
+         width: 94%;
+         max-width: 1200px;
+         margin: 30px auto
+      }
+
+      .page {
+         display: none
+      }
+
+      .page.active {
+         display: block
+      }
+
+      .card {
+         background: #fff;
+         padding: 25px;
+         margin-bottom: 25px;
+         border-radius: 12px;
+         box-shadow: 0 4px 15px rgba(0, 0, 0, .08)
+      }
+
+      .hero {
+         text-align: center;
+         padding: 60px 20px
+      }
+
+      .hero h2,
+      h2 {
+         color: #12355b;
+         margin-bottom: 20px
+      }
+
+      .hero h2 {
+         font-size: 34px
+      }
+
+      .hero p {
+         color: #64748b;
+         margin-bottom: 25px
+      }
+
+      label {
+         display: block;
+         font-weight: bold;
+         margin: 15px 0 7px
+      }
+
+      input,
+      select,
+      textarea {
+         width: 100%;
+         padding: 12px;
+         border: 1px solid #cbd5e1;
+         border-radius: 7px;
+         font-size: 15px
+      }
+
+      textarea {
+         min-height: 130px;
+         resize: vertical
+      }
+
+      .btn {
+         border: 0;
+         background: #12355b;
+         color: #fff;
+         padding: 12px 20px;
+         border-radius: 7px;
+         cursor: pointer;
+         margin-top: 20px
+      }
+
+      .btn:hover {
+         background: #1d4e89
+      }
+
+      .btn:disabled {
+         opacity: .6;
+         cursor: not-allowed
+      }
+
+      .danger {
+         background: #b91c1c
+      }
+
+      .danger:hover {
+         background: #dc2626
+      }
+
+      .secondary {
+         background: #475569
+      }
+
+      .success {
+         background: #dcfce7;
+         color: #166534;
+         padding: 15px;
+         border-radius: 7px;
+         margin-bottom: 20px
+      }
+
+      .error {
+         background: #fee2e2;
+         color: #991b1b;
+         padding: 15px;
+         border-radius: 7px;
+         margin-bottom: 20px
+      }
+
+      .info {
+         background: #dbeafe;
+         color: #1e40af;
+         padding: 15px;
+         border-radius: 7px;
+         margin-bottom: 20px
+      }
+
+      .hidden {
+         display: none !important
+      }
+
+      .stats {
+         display: grid;
+         grid-template-columns: repeat(4, 1fr);
+         gap: 20px;
+         margin-bottom: 25px
+      }
+
+      .stat {
+         background: #fff;
+         padding: 25px;
+         border-radius: 10px;
+         text-align: center;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, .07)
+      }
+
+      .stat h3 {
+         font-size: 30px;
+         color: #12355b;
+         margin-bottom: 7px
+      }
+
+      .status {
+         display: inline-block;
+         padding: 6px 10px;
+         border-radius: 5px;
+         font-weight: bold;
+         font-size: 13px
+      }
+
+      .pending {
+         background: #fef3c7;
+         color: #92400e
+      }
+
+      .progress {
+         background: #dbeafe;
+         color: #1e40af
+      }
+
+      .resolved {
+         background: #dcfce7;
+         color: #166534
+      }
+
+      .table-box {
+         overflow-x: auto;
+         margin-top: 25px
+      }
+
+      table {
+         width: 100%;
+         min-width: 1100px;
+         border-collapse: collapse
+      }
+
+      th,
+      td {
+         padding: 10px;
+         border: 1px solid #cbd5e1;
+         text-align: left;
+         vertical-align: top
+      }
+
+      th {
+         background: #12355b;
+         color: #fff
+      }
+
+      footer {
+         background: #12355b;
+         color: #fff;
+         text-align: center;
+         padding: 20px;
+         margin-top: 50px
+      }
+
+      .track-header {
+         background: #12355b;
+         color: #fff;
+         padding: 20px;
+         border-radius: 10px 10px 0 0
+      }
+
+      .track-header h2 {
+         color: #fff;
+         margin: 0
+      }
+
+      .track-details {
+         padding: 20px
+      }
+
+      .detail-row {
+         padding: 8px 0;
+         border-bottom: 1px solid #e2e8f0
+      }
+
+      .detail-row strong {
+         display: inline-block;
+         min-width: 150px
+      }
+
+      .timeline {
+         margin-top: 25px;
+         position: relative;
+         padding-left: 35px
+      }
+
+      .timeline:before {
+         content: "";
+         position: absolute;
+         left: 10px;
+         top: 5px;
+         bottom: 5px;
+         width: 3px;
+         background: #cbd5e1
+      }
+
+      .timeline-item {
+         position: relative;
+         margin-bottom: 25px
+      }
+
+      .timeline-dot {
+         position: absolute;
+         left: -31px;
+         top: 3px;
+         width: 18px;
+         height: 18px;
+         border-radius: 50%;
+         background: #cbd5e1;
+         border: 3px solid #fff;
+         box-shadow: 0 0 0 2px #cbd5e1
+      }
+
+      .timeline-item.active .timeline-dot {
+         background: #12355b;
+         box-shadow: 0 0 0 2px #12355b
+      }
+
+      .timeline-item.done .timeline-dot {
+         background: #15803d;
+         box-shadow: 0 0 0 2px #15803d
+      }
+
+      .timeline-item h4 {
+         color: #12355b;
+         margin-bottom: 4px
+      }
+
+      .timeline-item p {
+         color: #64748b;
+         font-size: 14px
+      }
+
+      .progress-bar-container {
+         width: 100%;
+         background: #e2e8f0;
+         height: 12px;
+         border-radius: 10px;
+         overflow: hidden;
+         margin: 20px 0
+      }
+
+      .progress-bar {
+         height: 100%;
+         background: #12355b;
+         transition: .3s
+      }
+
+      .search-box {
+         display: grid;
+         grid-template-columns: 2fr 1fr auto;
+         gap: 10px;
+         margin: 20px 0
+      }
+
+      .remark-box {
+         background: #f8fafc;
+         border-left: 4px solid #12355b;
+         padding: 15px;
+         margin-top: 15px;
+         border-radius: 5px
+      }
+
+      .small-btn {
+         padding: 8px 12px;
+         border: 0;
+         border-radius: 5px;
+         color: #fff;
+         background: #b91c1c;
+         cursor: pointer;
+         margin-top: 5px
+      }
+
+      .empty {
+         text-align: center;
+         padding: 30px;
+         color: #64748b
+      }
+
+      .spinner {
+         text-align: center;
+         padding: 30px;
+         color: #64748b
+      }
+
+      @media(max-width:800px) {
+         .stats {
+            grid-template-columns: 1fr 1fr
+         }
+
+         .search-box {
+            grid-template-columns: 1fr
+         }
+      }
+
+      @media(max-width:600px) {
+         .stats {
+            grid-template-columns: 1fr
+         }
+
+         .hero h2 {
+            font-size: 26px
+         }
+
+         .detail-row strong {
+            display: block
+         }
+      }
+   </style>
+</head>
+
+<body>
+
+   <header>
+      <h1>Student Complaint Portal</h1>
+      <p>Student Complaint Management System</p>
+      <nav>
+         <button onclick="showPage('home')">Home</button>
+         <button onclick="showPage('submit')">Submit Complaint</button>
+         <button onclick="showPage('track')">Track Complaint</button>
+         <button onclick="showPage('admin')">Admin</button>
+      </nav>
+   </header>
+
+   <div class="container">
+
+      <section id="home" class="page active">
+         <div class="card hero">
+            <h2>Welcome Students</h2>
+            <p>Submit your college problems and track your complaint status online.</p>
+            <button class="btn" onclick="showPage('submit')">Submit Complaint</button>
+            <button class="btn" onclick="showPage('track')">Track Complaint</button>
+         </div>
+
+         <div class="card">
+            <h2>How It Works</h2>
+            <ol style="padding-left:25px;line-height:2">
+               <li>Submit your complaint.</li>
+               <li>Get a unique Complaint ID.</li>
+               <li>Save your Complaint ID.</li>
+               <li>Track your complaint using Complaint ID and Student ID.</li>
+               <li>Admin updates the complaint status.</li>
+               <li>View admin remarks and complaint history.</li>
+            </ol>
+         </div>
+      </section>
+
+      <section id="submit" class="page">
+         <div class="card">
+            <h2>Submit Your Complaint</h2>
+
+            <div id="submitSuccess" class="success hidden"></div>
+            <div id="submitError" class="error hidden"></div>
+
+            <form id="complaintForm">
+
+               <label>Student Name</label>
+               <input id="studentName" type="text" placeholder="Enter your full name" required>
+
+               <label>Student ID</label>
+               <input id="studentId" type="text" placeholder="Enter student ID" required>
+
+               <label>Department</label>
+               <select id="department" required>
+                  <option value="">Select Department</option>
+                  <option>BCA</option>
+                  <option>BBA</option>
+                  <option>BCOM</option>
+                  <option>MBA</option>
+                  <option>MCOM</option>
+                  <option>BSC</option>
+                  <option>Other</option>
+               </select>
+
+               <label>Complaint Category</label>
+               <select id="category" required>
+                  <option value="">Select Category</option>
+                  <option>Academic</option>
+                  <option>Faculty</option>
+                  <option>Infrastructure</option>
+                  <option>Hostel</option>
+                  <option>Transport</option>
+                  <option>Library</option>
+                  <option>Examination</option>
+                  <option>Other</option>
+               </select>
+
+               <label>Describe Your Problem</label>
+               <textarea id="problem" placeholder="Explain your problem clearly..." required></textarea>
+
+               <button class="btn" type="submit" id="submitBtn">Submit Complaint</button>
+            </form>
+         </div>
+      </section>
+
+      <section id="track" class="page">
+         <div class="card">
+            <h2>Track Your Complaint</h2>
+
+            <div class="info">
+               Enter your Complaint ID and Student ID to track your complaint.
+            </div>
+
+            <label>Complaint ID</label>
+            <input id="trackId" type="text" placeholder="Example: CMP-0001">
+
+            <label>Student ID</label>
+            <input id="trackStudentId" type="text" placeholder="Enter your Student ID">
+
+            <button class="btn" id="trackBtn" onclick="trackComplaint()">Track Complaint</button>
+         </div>
+
+         <div id="trackResult"></div>
+      </section>
+
+      <section id="admin" class="page">
+         <div class="card">
+            <h2>Admin Login</h2>
+
+            <div id="loginError" class="error hidden"></div>
+
+            <label>Username</label>
+            <input id="adminUsername" type="text" placeholder="Enter username">
+
+            <label>Password</label>
+            <input id="adminPassword" type="password" placeholder="Enter password">
+
+            <label>Admin API Token</label>
+            <input id="adminTokenInput" type="password" placeholder="Enter the Worker's ADMIN_TOKEN">
+
+            <button class="btn" id="adminLoginBtn" onclick="adminLogin()">Login</button>
+         </div>
+      </section>
+
+      <section id="dashboard" class="page">
+
+         <div class="stats">
+            <div class="stat">
+               <h3 id="totalCount">0</h3>
+               <p>Total Complaints</p>
+            </div>
+            <div class="stat">
+               <h3 id="pendingCount">0</h3>
+               <p>Pending</p>
+            </div>
+            <div class="stat">
+               <h3 id="progressCount">0</h3>
+               <p>In Progress</p>
+            </div>
+            <div class="stat">
+               <h3 id="resolvedCount">0</h3>
+               <p>Resolved</p>
+            </div>
+         </div>
+
+         <div class="card">
+            <h2>Admin Dashboard (Live Feed)</h2>
+
+            <div id="dashboardError" class="error hidden"></div>
+
+            <button class="btn" onclick="loadDashboard()">Connect Live Feed</button>
+            <button class="btn secondary" onclick="adminLogout()">Logout</button>
+
+            <div class="table-box">
+               <textarea id="liveFeed" readonly
+                  style="width: 100%; height: 400px; font-family: monospace; padding: 15px; border: 1px solid #cbd5e1; border-radius: 7px; background: #f8fafc;"
+                  placeholder="Waiting for complaints..."></textarea>
+            </div>
+         </div>
+      </section>
+
+   </div>
+
+   <footer>
+      Student Complaint Management System © 2026
+   </footer>
+
+   <script>
+
+      /* =========================
+         API CONFIG
+         ========================= */
+
+      // Your Cloudflare Worker endpoint. All complaint data now lives here,
+      // not in localStorage, so it's shared across every device/browser.
+      const API_BASE = "wss://chat-server.freefireranked266.workers.dev"; // Replace with your actual Cloudflare Worker URL (must use wss://)
+
+      const ADMIN_USERNAME = "admin";
+      const ADMIN_PASSWORD = "admin123";
+
+
+      /* =========================
+         API HELPERS
+         ========================= */
+
+      async function apiRequest(path, options = {}) {
+
+         const headers = Object.assign(
+            { "Content-Type": "application/json" },
+            options.headers || {}
+         );
+
+         if (isAdmin()) {
+            headers["x-admin-token"] = sessionStorage.getItem("adminToken") || "";
+         }
+
+         const res = await fetch(API_BASE + path, Object.assign({}, options, { headers }));
+
+         let data = null;
+         try { data = await res.json(); } catch (e) { /* no body */ }
+
+         if (res.status === 401) {
+            // Token rejected by the Worker — force a fresh admin login.
+            adminLogout();
+            throw new Error("Admin session expired or token is incorrect. Please log in again.");
+         }
+
+         if (!res.ok) {
+            throw new Error((data && data.error) || ("Request failed (" + res.status + ")"));
+         }
+
+         return data;
+
+      }
+
+
+      /* =========================
+         NAVIGATION
+         ========================= */
+
+      function showPage(name) {
+
+         document.querySelectorAll(".page").forEach(function (page) {
+            page.classList.remove("active");
+         });
+
+         const page = document.getElementById(name);
+
+         if (page) page.classList.add("active");
+
+         if (name === "dashboard") {
+
+            if (!isAdmin()) {
+               showPage("admin");
+               return;
+            }
+
+            loadDashboard();
+
+         }
+
+      }
+
+
+      /* =========================
+         DATE
+         ========================= */
+
+      function now() {
+         return new Date().toLocaleString();
+      }
+
+
+      /* =========================
+         SUBMIT COMPLAINT
+         ========================= */
+
+      document.getElementById("complaintForm").addEventListener("submit", async function (e) {
+
+         e.preventDefault();
+
+         const success = document.getElementById("submitSuccess");
+         const error = document.getElementById("submitError");
+         const submitBtn = document.getElementById("submitBtn");
+
+         success.classList.add("hidden");
+         error.classList.add("hidden");
+
+         const studentName = document.getElementById("studentName").value.trim();
+         const studentId = document.getElementById("studentId").value.trim();
+         const department = document.getElementById("department").value;
+         const category = document.getElementById("category").value;
+         const problem = document.getElementById("problem").value.trim();
+
+         if (!studentName || !studentId || !department || !category || !problem) {
+
+            error.innerText = "Please fill all fields.";
+            error.classList.remove("hidden");
+            return;
+
+         }
+
+         submitBtn.disabled = true;
+         submitBtn.innerText = "Submitting...";
+
+         const generatedId = "CMP-" + Math.floor(Math.random() * 10000);
+         const textPayload = `Complaint ID: ${generatedId}
+Student Name: ${studentName}
+Student ID: ${studentId}
+Department: ${department}
+Category: ${category}
+Status: Pending
+Problem: ${problem}`;
+
+            try {
+               const wsUrl = new URL(API_BASE);
+               wsUrl.searchParams.set("room", "complaints");
+               const ws = new WebSocket(wsUrl.toString());
+
+               ws.onopen = () => {
+                  ws.send(textPayload);
+                  ws.close();
+
+                  success.innerHTML =
+                     "Complaint submitted successfully!<br><br>" +
+                     "Your Complaint ID is <strong>" +
+                     generatedId +
+                     "</strong><br><br>" +
+                     "Please save this Complaint ID to track your complaint.";
+
+                  success.classList.remove("hidden");
+
+                  document.getElementById("complaintForm").reset();
+
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "Submit Complaint";
+               };
+
+               ws.onerror = () => {
+                  error.innerText = "Could not submit complaint: Failed to connect to WebSocket. Ensure API_BASE starts with wss:// and the worker is running.";
+                  error.classList.remove("hidden");
+
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "Submit Complaint";
+               };
+            } catch (err) {
+               error.innerText = "Could not initialize WebSocket: " + err.message;
+               error.classList.remove("hidden");
+               submitBtn.disabled = false;
+               submitBtn.innerText = "Submit Complaint";
+            }
+
+            return; // Early return because WebSocket handles the success/error callbacks asynchronously
+
+         });
+
+
+      /* =========================
+         TRACK
+         ========================= */
+
+      async function trackComplaint() {
+
+         const id = document.getElementById("trackId").value.trim().toUpperCase();
+         const studentId = document.getElementById("trackStudentId").value.trim();
+
+         const result = document.getElementById("trackResult");
+         const trackBtn = document.getElementById("trackBtn");
+
+         if (!id || !studentId) {
+
+            result.innerHTML =
+               '<div class="error">Please enter Complaint ID and Student ID.</div>';
+
+            return;
+
+         }
+
+         trackBtn.disabled = true;
+         result.innerHTML = '<div class="spinner">Looking up your complaint...</div>';
+
+         try {
+
+            const wsUrl = new URL(API_BASE);
+            wsUrl.searchParams.set("room", "complaints");
+            const ws = new WebSocket(wsUrl.toString());
+
+            let foundComplaint = null;
+
+            ws.onmessage = (event) => {
+               const text = event.data;
+               
+               // Match the exact complaint ID
+               if (text.includes("Complaint ID: " + id)) {
+                  const lines = text.split('\n');
+                  const getVal = (key) => {
+                     const line = lines.find(l => l.startsWith(key + ":"));
+                     return line ? line.substring(key.length + 1).trim() : "";
+                  };
+                  
+                  // Ensure Student ID matches
+                  if (getVal("Student ID") === studentId) {
+                     // Since chat replays in chronological order, if we find multiple messages (updates),
+                     // it will overwrite `foundComplaint` with the latest status.
+                     foundComplaint = {
+                        id: id,
+                        studentName: getVal("Student Name"),
+                        studentId: getVal("Student ID"),
+                        department: getVal("Department"),
+                        category: getVal("Category"),
+                        problem: getVal("Problem"),
+                        status: getVal("Status") || "Pending",
+                        date: new Date().toLocaleDateString(), // No timestamps in plain chat, default to today
+                        history: []
+                     };
+                  }
+               }
+            };
+
+            ws.onerror = () => {
+               result.innerHTML = '<div class="card"><div class="error">Error connecting to tracking server.</div></div>';
+               trackBtn.disabled = false;
+            };
+
+            // Wait 1.5 seconds for history replay
+            setTimeout(() => {
+               ws.close();
+               trackBtn.disabled = false;
+               
+               if (foundComplaint) {
+                  renderTracking(foundComplaint);
+               } else {
+                  result.innerHTML = '<div class="card"><div class="error">Complaint not found or Student ID does not match. Note: Complaints submitted before this update cannot be tracked.</div></div>';
+               }
+            }, 1500);
+
+         } catch (err) {
+
+            result.innerHTML = '<div class="card"><div class="error">Error: ' + err.message + '</div></div>';
+            trackBtn.disabled = false;
+
+         }
+
+      }
+
+
+      /* =========================
+         TRACK DISPLAY
+         ========================= */
+
+      function renderTracking(c) {
+
+         let percentage = 25;
+
+         if (c.status === "In Progress") percentage = 65;
+         if (c.status === "Resolved") percentage = 100;
+
+         let statusClass = "pending";
+
+         if (c.status === "In Progress") statusClass = "progress";
+         if (c.status === "Resolved") statusClass = "resolved";
+
+         let history = "";
+
+         if (Array.isArray(c.history)) {
+
+            c.history.forEach(function (h) {
+
+               history += `
+
+<div class="timeline-item done">
+<div class="timeline-dot"></div>
+<h4>${escapeHTML(h.status)}</h4>
+<p>${escapeHTML(h.remark || "")}</p>
+<p>${escapeHTML(h.date || "")}</p>
+</div>
+
+`;
+
+            });
+
+         }
+
+         document.getElementById("trackResult").innerHTML = `
+
+<div class="card">
+
+<div class="track-header">
+<h2>Complaint Tracking</h2>
+</div>
+
+<div class="track-details">
+
+<div class="detail-row">
+<strong>Complaint ID:</strong>
+${escapeHTML(c.id)}
+</div>
+
+<div class="detail-row">
+<strong>Student Name:</strong>
+${escapeHTML(c.studentName)}
+</div>
+
+<div class="detail-row">
+<strong>Student ID:</strong>
+${escapeHTML(c.studentId)}
+</div>
+
+<div class="detail-row">
+<strong>Department:</strong>
+${escapeHTML(c.department)}
+</div>
+
+<div class="detail-row">
+<strong>Category:</strong>
+${escapeHTML(c.category)}
+</div>
+
+<div class="detail-row">
+<strong>Problem:</strong>
+${escapeHTML(c.problem)}
+</div>
+
+<div class="detail-row">
+<strong>Submitted:</strong>
+${escapeHTML(c.date)}
+</div>
+
+<div class="detail-row">
+<strong>Last Updated:</strong>
+${escapeHTML(c.updatedAt || c.date)}
+</div>
+
+<div class="detail-row">
+<strong>Status:</strong>
+<span class="status ${statusClass}">
+${escapeHTML(c.status)}
+</span>
+</div>
+
+<div class="progress-bar-container">
+<div class="progress-bar" style="width:${percentage}%"></div>
+</div>
+
+<div class="timeline">
+
+<div class="timeline-item ${c.status === "Pending" ? "active" : "done"}">
+<div class="timeline-dot"></div>
+<h4>Complaint Submitted</h4>
+<p>Complaint has been received.</p>
+</div>
+
+<div class="timeline-item ${c.status === "In Progress" ? "active" : c.status === "Resolved" ? "done" : ""}">
+<div class="timeline-dot"></div>
+<h4>In Progress</h4>
+<p>Admin is reviewing or working on your complaint.</p>
+</div>
+
+<div class="timeline-item ${c.status === "Resolved" ? "done" : ""}">
+<div class="timeline-dot"></div>
+<h4>Resolved</h4>
+<p>Complaint has been resolved.</p>
+</div>
+
+</div>
+
+<div class="remark-box">
+<strong>Admin Remark:</strong><br>
+${escapeHTML(c.remark || "No admin remark yet.")}
+</div>
+
+${history ? `
+
+<div style="margin-top:30px">
+<h3 style="color:#12355b;margin-bottom:15px">
+Complaint History
+</h3>
+
+<div class="timeline">
+${history}
+</div>
+
+</div>
+
+`: ""}
+
+</div>
+</div>
+</div>
+
+`;
+
+      }
+
+
+      /* =========================
+         ADMIN LOGIN
+         ========================= */
+
+      function adminLogin() {
+
+         const username = document.getElementById("adminUsername").value.trim();
+         const password = document.getElementById("adminPassword").value;
+         const token = document.getElementById("adminTokenInput").value.trim();
+
+         const error = document.getElementById("loginError");
+
+         error.classList.add("hidden");
+
+         if (!token) {
+
+            error.innerText = "Please enter the Admin API Token (set as ADMIN_TOKEN on the Worker).";
+            error.classList.remove("hidden");
+            return;
+
+         }
+
+         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+
+            sessionStorage.setItem("adminLoggedIn", "true");
+            sessionStorage.setItem("adminToken", token);
+
+            document.getElementById("adminUsername").value = "";
+            document.getElementById("adminPassword").value = "";
+            document.getElementById("adminTokenInput").value = "";
+
+            showPage("dashboard");
+
+         } else {
+
+            error.innerText = "Incorrect username or password.";
+            error.classList.remove("hidden");
+
+         }
+
+      }
+
+
+      function isAdmin() {
+
+         return sessionStorage.getItem("adminLoggedIn") === "true" &&
+            !!sessionStorage.getItem("adminToken");
+
+      }
+
+
+      function adminLogout() {
+
+         sessionStorage.removeItem("adminLoggedIn");
+         sessionStorage.removeItem("adminToken");
+         showPage("admin");
+
+      }
+
+
+      /* =========================
+         DASHBOARD
+         ========================= */
+
+      let adminWs = null;
+
+      function loadDashboard() {
+
+         if (!isAdmin()) {
+            showPage("admin");
+            return;
+         }
+
+         const errorBox = document.getElementById("dashboardError");
+         const feed = document.getElementById("liveFeed");
+
+         errorBox.classList.add("hidden");
+
+         if (adminWs) {
+            adminWs.close();
+         }
+
+         try {
+
+            const wsUrl = new URL(API_BASE);
+            wsUrl.searchParams.set("room", "complaints");
+            adminWs = new WebSocket(wsUrl.toString());
+
+            adminWs.onopen = () => {
+               feed.value = "Connected to live complaint feed...\n\n";
+            };
+
+            adminWs.onmessage = (event) => {
+               feed.value += event.data + "\n\n------------------------\n\n";
+               feed.scrollTop = feed.scrollHeight;
+            };
+
+            adminWs.onerror = (err) => {
+               errorBox.innerText = "Could not connect to live feed WebSocket. Ensure API_BASE is wss://...";
+               errorBox.classList.remove("hidden");
+            };
+
+         } catch (err) {
+
+            errorBox.innerText = "Could not load feed: " + err.message;
+            errorBox.classList.remove("hidden");
+
+         }
+
+      }
+
+
+      /* =========================
+         SECURITY
+         ========================= */
+
+      function escapeHTML(value) {
+
+         return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+      }
+
+      function escapeJS(value) {
+
+         return String(value)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'")
+            .replace(/\n/g, "\\n")
+            .replace(/\r/g, "\\r");
+
+      }
+
+
+      /* =========================
+         ENTER KEY TRACK
+         ========================= */
+
+      document.getElementById("trackId").addEventListener("keydown", function (e) {
+
+         if (e.key === "Enter") trackComplaint();
+
+      });
+
+      document.getElementById("trackStudentId").addEventListener("keydown", function (e) {
+
+         if (e.key === "Enter") trackComplaint();
+
+      });
+
+   </script>
+
+</body>
+
+</html>
